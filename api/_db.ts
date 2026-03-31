@@ -1,8 +1,9 @@
 import { Redis } from '@upstash/redis'
 
+const redisUrl = new URL(process.env.REDIS_URL!)
 export const kv = new Redis({
-  url: process.env.UPSTASH_REDIS_REST_URL!,
-  token: process.env.UPSTASH_REDIS_REST_TOKEN!,
+  url: `https://${redisUrl.hostname}`,
+  token: redisUrl.password,
 })
 
 // Key helpers
