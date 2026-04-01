@@ -66,11 +66,40 @@ export default function DashboardPage() {
       </div>
 
       <div className="px-5 py-6 max-w-md mx-auto flex flex-col gap-4">
+        {/* Reward banner */}
+        {stats && (
+          stats.rewardEarned ? (
+            <div className="card bg-yellow-50 border border-yellow-200 text-center">
+              <p className="text-2xl mb-1">🎉</p>
+              <p className="font-bold text-yellow-800">You earned ฿100!</p>
+              <p className="text-xs text-yellow-600 mt-1">7 friends clicked your referral link</p>
+            </div>
+          ) : (
+            <div className="card">
+              <div className="flex items-center justify-between mb-2">
+                <p className="text-sm font-medium text-gray-700">฿100 Reward Progress</p>
+                <p className="text-sm font-bold text-line-green">
+                  {stats.uniqueClicks ?? 0} / 7
+                </p>
+              </div>
+              <div className="w-full bg-gray-100 rounded-full h-2">
+                <div
+                  className="bg-line-green h-2 rounded-full transition-all"
+                  style={{ width: `${Math.min(((stats.uniqueClicks ?? 0) / 7) * 100, 100)}%` }}
+                />
+              </div>
+              <p className="text-xs text-gray-400 mt-2">
+                Get {7 - (stats.uniqueClicks ?? 0)} more friends to click your link
+              </p>
+            </div>
+          )
+        )}
+
         {/* Stats */}
         {stats && (
           <div className="grid grid-cols-3 gap-3">
             {[
-              { label: 'Clicks', value: stats.clicks, icon: '👆' },
+              { label: 'Friend Clicks', value: stats.uniqueClicks ?? 0, icon: '👆' },
               { label: 'Applications', value: stats.applications, icon: '📝' },
               { label: 'Shares', value: stats.shares, icon: '📤' },
             ].map(s => (

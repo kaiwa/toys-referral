@@ -18,6 +18,12 @@ export const kv = {
     const items = await client.lrange(key, start, stop)
     return items.map((item: string) => JSON.parse(item) as T)
   },
+  async sadd(key: string, value: string): Promise<number> {
+    return client.sadd(key, value)
+  },
+  async scard(key: string): Promise<number> {
+    return client.scard(key)
+  },
 }
 
 // Key helpers
@@ -27,6 +33,7 @@ export const keys = {
   stats: (code: string) => `stats:${code}`,
   appsList: (code: string) => `apps:${code}`,
   app: (id: string) => `app:${id}`,
+  clickerSet: (code: string) => `clickers:${code}`,
 }
 
 // Generate short referral code from LINE user ID

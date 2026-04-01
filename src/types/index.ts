@@ -10,8 +10,10 @@ export interface User {
 export interface ReferralStats {
   referralCode: string
   clicks: number
+  uniqueClicks: number
   applications: number
   shares: number
+  rewardEarned: boolean
 }
 
 export interface Application {

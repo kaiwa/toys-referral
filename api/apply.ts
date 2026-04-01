@@ -1,5 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
-import { kv, keys } from './_db'
+import { kv, keys } from './_db.js'
 import type { Application, ReferralStats } from '../src/types'
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {

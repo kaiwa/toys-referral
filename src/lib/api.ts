@@ -17,11 +17,11 @@ export async function registerUser(params: {
   return res.json()
 }
 
-export async function trackClick(referralCode: string): Promise<void> {
+export async function trackClick(referralCode: string, visitorId?: string): Promise<void> {
   await fetch(`${BASE}/track`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ referralCode }),
+    body: JSON.stringify({ referralCode, visitorId }),
   })
 }
 

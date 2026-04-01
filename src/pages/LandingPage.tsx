@@ -4,6 +4,16 @@ import { isLoggedIn, login, getProfile, isInClient, getReferralCodeFromUrl, shar
 import { registerUser, trackClick } from '../lib/api'
 import type { RegisterResponse } from '../types'
 
+function getVisitorId(): string {
+  const key = 'line_ref_visitor'
+  let id = localStorage.getItem(key)
+  if (!id) {
+    id = crypto.randomUUID()
+    localStorage.setItem(key, id)
+  }
+  return id
+}
+
 const JOB_TITLE = import.meta.env.VITE_JOB_TITLE || 'Job Opportunity'
 const JOB_DESCRIPTION = import.meta.env.VITE_JOB_DESCRIPTION || 'Join our team! Great pay and flexible hours.'
 
@@ -17,7 +27,7 @@ export default function LandingPage() {
   const init = useCallback(async () => {
     // Track the click if arrived via referral
     if (refCode) {
-      trackClick(refCode).catch(() => {})
+      trackClick(refCode, getVisitorId()).catch(() => {})
     }
 
     // If not logged in, show landing with login prompt

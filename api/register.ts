@@ -1,5 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
-import { kv, keys, generateCode } from './_db'
+import { kv, keys, generateCode } from './_db.js'
 import type { User, ReferralStats } from '../src/types'
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
@@ -41,8 +41,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   const stats: ReferralStats = {
     referralCode,
     clicks: 0,
+    uniqueClicks: 0,
     applications: 0,
     shares: 0,
+    rewardEarned: false,
   }
 
   // If code already taken (collision), append suffix
