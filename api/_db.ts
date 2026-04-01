@@ -1,10 +1,24 @@
-import { Redis } from '@upstash/redis'
+import Redis from 'ioredis'
 
-const redisUrl = new URL(process.env.REDIS_URL!)
-export const kv = new Redis({
-  url: `https://${redisUrl.hostname}`,
-  token: redisUrl.password,
-})
+const client = new Redis(process.env.REDIS_URL!)
+
+export const kv = {
+  async get<T>(key: string): Promise<T | null> {
+    const val = await client.get(key)
+    if (val === null) return null
+    return JSON.parse(val) as T
+  },
+  async set(key: string, value: unknown): Promise<void> {
+    await client.set(key, JSON.stringify(value))
+  },
+  async rpush(key: string, ...values: unknown[]): Promise<void> {
+    await client.rpush(key, ...values.map(v => JSON.stringify(v)))
+  },
+  async lrange<T>(key: string, start: number, stop: number): Promise<T[]> {
+    const items = await client.lrange(key, start, stop)
+    return items.map((item: string) => JSON.parse(item) as T)
+  },
+}
 
 // Key helpers
 export const keys = {
